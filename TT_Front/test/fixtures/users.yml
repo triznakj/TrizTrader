@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  goal: MyText
+  goals: MyText
 
 two:
   name: MyString
-  goal: MyText
+  goals: MyText

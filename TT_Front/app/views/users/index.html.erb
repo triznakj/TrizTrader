@@ -1,0 +1,17 @@
+<h1>Welcome To TrizTrader!</h1>
+<a href="/users/new">Make a New User</a>
+<h2>Choose an Existing User</h2>
+ 
+<table>
+  <tr>
+    <th>User Name</th>
+    <th>User Goals</th>
+  </tr>
+ 
+  <% @users.each do |u| %>
+    <tr>
+      <td><%= u["name"] %></td>
+      <td><%= u["goals"] %></td>
+    </tr>
+  <% end %>
+</table>

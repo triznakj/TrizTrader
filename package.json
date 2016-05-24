@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/triznakj/TrizTrader/issues"
   },
-  "homepage": "https://github.com/triznakj/TrizTrader#readme"
+  "homepage": "https://github.com/triznakj/TrizTrader#readme",
+  "dependencies": {
+    "assert": "^1.4.0",
+    "mongoose": "^4.4.19"
+  }
 }
