@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
 		http = Net::HTTP.new(uri.host, uri.port)
 		http.post(uri, newUser.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
 	end
+
+	def self.delete id
+		uri = URI('http://localhost:3000/user/'+id)
+		http = Net::HTTP.new(uri.host, uri.port)
+		req = Net::HTTP::Delete.new(uri.path)
+		res = http.request(req)
+		puts "deleted #{res}"
+	end
 end

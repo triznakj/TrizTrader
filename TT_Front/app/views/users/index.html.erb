@@ -6,12 +6,18 @@
   <tr>
     <th>User Name</th>
     <th>User Goals</th>
+    <th>Edit User</th>
+    <th>Delete User</th>
   </tr>
  
   <% @users.each do |u| %>
     <tr>
       <td><%= u["name"] %></td>
       <td><%= u["goals"] %></td>
+      <td><a href="/users/edit">Edit</a></td>
+      <td><%= link_to 'Destroy', user_path(u["_id"]),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
 </table>

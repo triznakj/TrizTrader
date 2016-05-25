@@ -13,4 +13,12 @@ class UsersController < ApplicationController
 		#render plain: params[:user].inspect
 		User.Post(params[:user])
 	end
+
+	def edit
+		@user = User.find(params[:id])
+	end
+
+	def destroy
+		User.delete(params[:id])
+	end
 end
