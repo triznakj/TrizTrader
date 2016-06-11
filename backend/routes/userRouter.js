@@ -24,16 +24,11 @@ userRouter.route('/')
 
         var id = user._id;
 
-        var newPos = [];
-        var position = {"userId":id,"name":"Cash","value":user.cash_invested};
-        Positions.create(position, function (err, pos) {
+        var newPos = {"userId":id,"name":"Cash","value":user.cash_invested};
+        Positions.create(newPos, function (err, pos) {
             if (err) throw err;
-        })
-        newPos.push(position);
-        var updateObj = {"positions": newPos};
-        console.log("Got here");
-        Users.findByIdAndUpdate(id, updateObj, function(err, user) {
-            if (err) console.error("ERROR: ",err);
+            user.positions.push(pos);
+            user.save();
         })
 
         res.writeHead(200, {
@@ -46,7 +41,10 @@ userRouter.route('/')
 .delete(function (req, res, next) {
     Users.remove({}, function (err, resp) {
         if (err) throw err;
-        res.json(resp);
+        Positions.remove({}, function (err, respo) {
+            if (err) throw err;
+            res.json(respo);
+        })
     });
 });
 
@@ -59,22 +57,26 @@ userRouter.route('/:userId')
 })
 
 .put(function (req, res, next) {
-    console.log(req.params.userId);
     Users.findByIdAndUpdate(req.params.userId, {
         $set: req.body
     }, {
         new: true
     }, function (err, user) {
         if (err) throw err;
+        for(i = 0; i < user.positions.length; i++){
+            user.positions[i].save();
+        }
         res.json(user);
     });
 })
 
 .delete(function (req, res, next) {
-    console.log("Got here");
-    Users.findByIdAndRemove(req.params.userId, function (err, resp) {    
+    Positions.remove({userId: req.params.userId}, function (err) {
         if (err) throw err;
-        res.json(resp);
+        Users.findByIdAndRemove(req.params.userId, function (err, resp) {    
+            if (err) throw err;
+            res.json(resp);
+        });
     });
 });
 

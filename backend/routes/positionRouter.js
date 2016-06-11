@@ -12,6 +12,7 @@ positionRouter.route('/')
 .get(function (req, res, next) {
     Positions.find({}, function (err, pos) {
         if (err) throw err;
+        
         console.log(pos);
         res.json(pos);
     });
@@ -21,22 +22,22 @@ positionRouter.route('/')
     Positions.create(req.body, function(err, pos) {
         if (err) console.error("ERROR: ", err);
         var userId = pos.userId;
+
         Users.findById(userId, function (err, user) {
             if(err) console.error("ERROR: ", err);
-            var newPos = user.positions;
-            newPos.push(pos);
+            user.positions.push(pos);
 
-            for(i = 0; i < newPos.length; i++){
-                var p = newPos[i];
+            for(i = 0; i < user.positions.length; i++){
+                var p = user.positions[i];
+
                 if(p.name == "Cash"){
-                    p.value = p.value - pos.value;
+                    p.value -= pos.value;
                 }
+
             }
-            var updateObj = {"positions":newPos};
-            Users.findByIdAndUpdate(userId, updateObj, function(err, user) {
-                if(err) console.error("ERROR: ", err);
-                res.json(user);
-            });
+
+            user.save();
+            res.json(user);
         });
     });
 })
@@ -58,7 +59,7 @@ positionRouter.route('/:posId')
 
 .put(function (req, res, next) {
     console.log(req.params.userId);
-    Users.findByIdAndUpdate(req.params.userId, {
+    Positions.findByIdAndUpdate(req.params.userId, {
         $set: req.body
     }, {
         new: true
@@ -71,29 +72,30 @@ positionRouter.route('/:posId')
 .delete(function (req, res, next) {
     Positions.findById(req.params.posId, function (err, pos) {
         if (err) throw err;
+
         Users.findById(pos.userId, function (err, user) {
             if (err) throw err;
-            var value = pos.value;
+
             var spliceIndex = -1;
-            console.log("STARTING THE SPLICE AND ADJUSTMENTS");
+
             for(i = 0; i < user.positions.length; i++){
                 var p = user.positions[i];
+
                 if(p.name == "Cash"){
-                    p.value = p.value + value;
+                    p.value = p.value + pos.value;
                 }
+
                 if(p._id == req.params.posId) {
                     spliceIndex = i;
                 }
             }
+
             user.positions.splice(spliceIndex,1);
-            console.log(user.positions);
-            var updateObj = {"positions":user.positions};
-            Users.findByIdAndUpdate(pos.userId, updateObj, function(err, user) {
-                if(err) console.error("ERROR: ", err);
-                Positions.findByIdAndRemove(req.params.posId, function (err, resp) {
-                    if (err) throw err;
-                    res.json(resp);
-                });
+            user.save();
+
+            Positions.findByIdAndRemove(req.params.posId, function (err, resp) {
+                if (err) throw err;
+                res.json(resp);
             });
 
         });
