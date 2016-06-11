@@ -18,7 +18,9 @@
       <% if p["name"] == "Cash" %>
         <td>N/A</td>
       <% else %>
-        <td>Liquidate</td>
+        <td><%= link_to 'Destroy', position_path(p["_id"]),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
       <% end %>
     </tr>
   <% end %>

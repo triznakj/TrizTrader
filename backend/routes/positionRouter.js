@@ -69,12 +69,37 @@ positionRouter.route('/:posId')
 })
 
 .delete(function (req, res, next) {
-    console.log("DELETE REQUEST");
-    console.log(req.params.posId);
-    Positions.findByIdAndRemove(req.params.posId, function (err, resp) {       
+    Positions.findById(req.params.posId, function (err, pos) {
         if (err) throw err;
-        res.json(resp);
+        Users.findById(pos.userId, function (err, user) {
+            if (err) throw err;
+            var value = pos.value;
+            var spliceIndex = -1;
+            console.log("STARTING THE SPLICE AND ADJUSTMENTS");
+            for(i = 0; i < user.positions.length; i++){
+                var p = user.positions[i];
+                if(p.name == "Cash"){
+                    p.value = p.value + value;
+                }
+                if(p._id == req.params.posId) {
+                    spliceIndex = i;
+                }
+            }
+            user.positions.splice(spliceIndex,1);
+            console.log(user.positions);
+            var updateObj = {"positions":user.positions};
+            Users.findByIdAndUpdate(pos.userId, updateObj, function(err, user) {
+                if(err) console.error("ERROR: ", err);
+                Positions.findByIdAndRemove(req.params.posId, function (err, resp) {
+                    if (err) throw err;
+                    res.json(resp);
+                });
+            });
+
+        });
+        
     });
+
 });
 
 module.exports = positionRouter;

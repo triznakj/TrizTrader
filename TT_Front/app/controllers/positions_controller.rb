@@ -26,5 +26,6 @@ class PositionsController < ApplicationController
 	end
 
 	def destroy
+		Position.Delete(params[:id])
 	end
 end
