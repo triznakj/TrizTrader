@@ -1,0 +1,18 @@
+<h1>All Known Positions</h1>
+ 
+<table>
+  <tr>
+    <th>Position Name</th>
+    <th>Position Value</th>
+    <th>Position Owner</th>
+  </tr>
+ 
+  <% @positions.each do |p| %>
+    <tr>
+      <td><%= p["name"] %></td>
+      <td><%= p["value"] %></td>
+      <td>Dummy</td>
+
+    </tr>
+  <% end %>
+</table>

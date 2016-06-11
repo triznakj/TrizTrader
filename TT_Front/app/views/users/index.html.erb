@@ -1,20 +1,25 @@
 <h1>Welcome To TrizTrader!</h1>
-<a href="/users/new">Make a New User</a>
+<a href="/users/new">Make a New User</a><br>
+<a href="/positions">View All Positions</a>
 <h2>Choose an Existing User</h2>
  
 <table>
   <tr>
     <th>User Name</th>
     <th>User Goals</th>
+    <th>Total Cash Invested</th>
     <th>Edit User</th>
     <th>Delete User</th>
   </tr>
  
   <% @users.each do |u| %>
     <tr>
-      <td><%= u["name"] %></td>
+      <td><%= link_to u["name"], user_path(u["_id"]),
+              method: :get  %></td>
       <td><%= u["goals"] %></td>
-      <td><a href="/users/edit">Edit</a></td>
+      <td><%= u["cash_invested"] %></td>
+      <td><%= link_to 'Edit', edit_user_path(u["_id"]),
+              method: :get %></td>
       <td><%= link_to 'Destroy', user_path(u["_id"]),
               method: :delete,
               data: { confirm: 'Are you sure?' } %></td>

@@ -1,6 +1,7 @@
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Position = require('./position-1').schema
 
 // create a schema
 var userSchema = new Schema({
@@ -12,7 +13,12 @@ var userSchema = new Schema({
     goals: {
         type: String,
         required: true
-    }
+    },
+    cash_invested: {
+        type: Number,
+        required: true
+    },
+    positions: [Position]
 }, {
     timestamps: true
 });

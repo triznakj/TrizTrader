@@ -1,0 +1,57 @@
+
+
+
+<h2>The Portfolio: <%= @total %></h2>
+<table>
+  <tr>
+    <th>Position</th>
+    <th>Cash Amount</th>
+    <th>Percent of Portfolio</th>
+    <th>Liquidate</th>
+  </tr>
+ 
+  <% @user["positions"].each do |p| %>
+    <tr>
+      <td><%= p["name"] %></td>
+      <td><%= p["value"] %></td>
+      <td>100%</td>
+      <% if p["name"] == "Cash" %>
+        <td>N/A</td>
+      <% else %>
+        <td>Liquidate</td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h2>Deposit Cash</h2>
+<%= form_for :deposit, method: :put, url: user_path(@user["_id"]) do |f| %>
+  <%= f.hidden_field :id, value: @user["_id"]%>
+  <p>
+    <%= f.label :"Amount To Add" %><br>
+    <%= f.number_field :deposit_amt %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+
+<h2>Add a Position</h2>
+
+<%= form_for :position, method: :post, url: "/positions" do |p| %>
+  <%= p.hidden_field :userId, value: @user["_id"]%>
+  <p>
+    <%= p.label :"Company Ticker" %><br>
+    <%= p.text_field :name %>
+  </p>
+  <p>
+    <%= p.label :"Amount To Invest" %><br>
+    <%= p.number_field :value %>
+  </p>
+  <p>
+    <%= p.submit %>
+  </p>
+<% end %>
+<a href="/">Home</a>
