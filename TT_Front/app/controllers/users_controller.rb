@@ -14,6 +14,10 @@ class UsersController < ApplicationController
 		@user["positions"].each do |p|
 			@total = @total + Integer(p["value"])
 		end
+		@user["positions"].each do |p|
+			p["percentage"] = (p["value"].to_f / @total).round(2)
+		end
+
 
 	end
 

@@ -7,6 +7,7 @@
     <th>Position</th>
     <th>Cash Amount</th>
     <th>Percent of Portfolio</th>
+    <th>Num Shares</th>
     <th>Liquidate</th>
   </tr>
  
@@ -14,7 +15,12 @@
     <tr>
       <td><%= p["name"] %></td>
       <td><%= p["value"] %></td>
-      <td>100%</td>
+      <td><%= p["percentage"] %></td>
+      <% if not p["qty"].nil? %>
+        <td><%= p["qty"] %></td>
+      <% else %>
+        <td>N/A</td>
+      <% end %>
       <% if p["name"] == "Cash" %>
         <td>N/A</td>
       <% else %>
@@ -52,6 +58,9 @@
     <%= p.label :"Amount To Invest" %><br>
     <%= p.number_field :value %>
   </p>
+  <p>
+    <%= p.label :"Price Per Share [OPTIONAL]" %><br>
+    <%= p.number_field :pps %>
   <p>
     <%= p.submit %>
   </p>
