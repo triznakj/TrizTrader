@@ -14,7 +14,9 @@ class PositionsController < ApplicationController
 	end
 
 	def update
-
+		pos = Position.find(params[:id])
+		pos["value"] = pos["qty"].to_f * params[:new_price]["share_price"].to_f
+		Position.Put(pos)
 	end
 
 	def create

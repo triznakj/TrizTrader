@@ -58,14 +58,25 @@ positionRouter.route('/:posId')
 })
 
 .put(function (req, res, next) {
-    console.log(req.params.userId);
-    Positions.findByIdAndUpdate(req.params.userId, {
+    Positions.findByIdAndUpdate(req.params.posId, {
         $set: req.body
     }, {
         new: true
-    }, function (err, user) {
+    }, function (err, pos) {
         if (err) throw err;
-        res.json(user);
+        Users.findById(pos.userId, function(err, user) {
+            if (err) throw err;
+            for(i = 0; i < user.positions.length; i++){
+                var p = user.positions[i];
+
+                if(p.name == pos.name){
+                    p.value = pos.value;
+                }
+
+            }
+            user.save();
+        })
+        res.json(pos);
     });
 })
 

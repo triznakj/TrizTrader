@@ -9,6 +9,7 @@
     <th>Percent of Portfolio</th>
     <th>Num Shares</th>
     <th>Liquidate</th>
+    <th>Update Share Price</th>
   </tr>
  
   <% @user["positions"].each do |p| %>
@@ -27,6 +28,21 @@
         <td><%= link_to 'Destroy', position_path(p["_id"]),
               method: :delete,
               data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+      <% if not p["qty"].nil? %>
+        <td>
+          <%= form_for :new_price, method: :put, url: ("/positions/"+p["_id"]) do |f| %>
+          <p>
+            <%= f.label :"New Share Price" %><br>
+            <%= f.number_field :share_price %>
+          </p>
+          <p>
+            <%= f.submit %>
+          </p>
+          <% end %>
+        </td>
+      <% else %>
+        <td>N/A</td>
       <% end %>
     </tr>
   <% end %>
