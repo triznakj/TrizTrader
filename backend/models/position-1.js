@@ -1,7 +1,7 @@
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId
+var ObjectId = Schema.ObjectId;
 
 // create a schema
 var positionSchema = new Schema({

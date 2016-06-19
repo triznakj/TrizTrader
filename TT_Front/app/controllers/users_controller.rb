@@ -10,13 +10,19 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(params[:id])
-		@total = 0
+		@positions = []
+		@total = @user["cash_held"]
 		@user["positions"].each do |p|
-			@total = @total + Integer(p["value"])
+			puts p
+			pos = Position.Find(p)
+			@positions.push(pos)
+			@total = @total + Integer(pos["value"])
 		end
-		@user["positions"].each do |p|
+
+		@positions.each do |p|
 			p["percentage"] = (p["value"].to_f / @total).round(2)
 		end
+		@user["cash_percent"] = (@user["cash_held"].to_f / @total).round(2)
 
 
 	end
@@ -37,6 +43,7 @@ class UsersController < ApplicationController
 	end
 
 	def create
+		params[:user]["cash_held"] = params[:user]["cash_invested"]
 		User.Post(params[:user])
 	end
 

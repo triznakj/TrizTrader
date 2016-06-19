@@ -11,8 +11,16 @@
     <th>Liquidate</th>
     <th>Update Share Price</th>
   </tr>
- 
-  <% @user["positions"].each do |p| %>
+    <tr>
+      <td>Cash</td>
+      <td><%= @user["cash_held"] %></td>
+      <td><%= @user["cash_percent"] %></td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      </tr>
+      
+  <% @positions.each do |p| %>
     <tr>
       <td><%= p["name"] %></td>
       <td><%= p["value"] %></td>
@@ -22,13 +30,9 @@
       <% else %>
         <td>N/A</td>
       <% end %>
-      <% if p["name"] == "Cash" %>
-        <td>N/A</td>
-      <% else %>
-        <td><%= link_to 'Destroy', position_path(p["_id"]),
+      <td><%= link_to 'Destroy', position_path(p["_id"]),
               method: :delete,
               data: { confirm: 'Are you sure?' } %></td>
-      <% end %>
       <% if not p["qty"].nil? %>
         <td>
           <%= form_for :new_price, method: :put, url: ("/positions/"+p["_id"]) do |f| %>

@@ -21,7 +21,7 @@ class Position < ActiveRecord::Base
 		res = http.request(req)
 	end
 
-	def self.find id
+	def self.Find id
 		uri = URI('http://localhost:3000/position/'+id)
 		http = Net::HTTP.new(uri.host, uri.port)
 		req = Net::HTTP::Get.new(uri.path)

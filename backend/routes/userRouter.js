@@ -22,19 +22,10 @@ userRouter.route('/')
     Users.create(req.body, function (err, user) {
         if (err) throw err;
 
-        var id = user._id;
-
-        var newPos = {"userId":id,"name":"Cash","value":user.cash_invested};
-        Positions.create(newPos, function (err, pos) {
-            if (err) throw err;
-            user.positions.push(pos);
-            user.save();
-        })
-
         res.writeHead(200, {
             'Content-Type': 'text/plain'
         });
-        res.end('Added the User with id: ' + id);
+        res.end('Added the User with id: ' + user._id);
     });
 })
 
@@ -63,9 +54,6 @@ userRouter.route('/:userId')
         new: true
     }, function (err, user) {
         if (err) throw err;
-        for(i = 0; i < user.positions.length; i++){
-            user.positions[i].save();
-        }
         res.json(user);
     });
 })

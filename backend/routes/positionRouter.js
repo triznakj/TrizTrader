@@ -26,15 +26,7 @@ positionRouter.route('/')
         Users.findById(userId, function (err, user) {
             if(err) console.error("ERROR: ", err);
             user.positions.push(pos);
-
-            for(i = 0; i < user.positions.length; i++){
-                var p = user.positions[i];
-
-                if(p.name == "Cash"){
-                    p.value -= pos.value;
-                }
-
-            }
+            user.cash_held -= pos.value;
 
             user.save();
             res.json(user);
@@ -86,17 +78,12 @@ positionRouter.route('/:posId')
 
         Users.findById(pos.userId, function (err, user) {
             if (err) throw err;
+            user.cash_held += pos.value;
 
             var spliceIndex = -1;
 
             for(i = 0; i < user.positions.length; i++){
-                var p = user.positions[i];
-
-                if(p.name == "Cash"){
-                    p.value = p.value + pos.value;
-                }
-
-                if(p._id == req.params.posId) {
+                if(user.positions[i] == req.params.posId){
                     spliceIndex = i;
                 }
             }
