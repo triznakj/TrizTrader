@@ -30,7 +30,7 @@ positionRouter.route('/')
             user.cash_held -= pos.value;
 
             user.save();
-            res.json(user);
+            res.json({id: pos._id});
         });
     });
 })

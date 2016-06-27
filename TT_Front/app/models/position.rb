@@ -11,7 +11,8 @@ class Position < ActiveRecord::Base
 	def self.Post newPos
 		uri = URI('http://localhost:3000/position')
 		http = Net::HTTP.new(uri.host, uri.port)
-		http.post(uri, newPos.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+		res = http.post(uri, newPos.to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
+		return JSON.parse(res.body)
 	end
 
 	def self.Delete id

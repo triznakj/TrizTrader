@@ -43,7 +43,14 @@ class PositionsController < ApplicationController
 		if not params[:position]["pps"].nil?
 			params[:position]["qty"] = params[:position][:value].to_f / params[:position]["pps"].to_f
 		end
-		Position.Post(params[:position])
+		res = Position.Post(params[:position])
+		trans = {:userId => params[:position]["userId"], 
+					:posId => res["id"], 
+					:ticker => params[:position]["name"], 
+					:isBuy => true, 
+					:value => params[:position]["value"],
+					:qty => params[:position]["qty"]}.to_json
+		Transaction.Post(trans)
 	end
 
 	def edit
