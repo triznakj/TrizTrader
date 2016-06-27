@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Position = require('./position-1').schema
+var Transactions = require('./transaction').schema
 var ObjectId = Schema.ObjectId;
 
 // create a schema
@@ -23,7 +24,8 @@ var userSchema = new Schema({
         type: Number,
         required: true
     },
-    positions: [ObjectId]
+    positions: [ObjectId],
+    transactions: [ObjectId]
 }, {
     timestamps: true
 });

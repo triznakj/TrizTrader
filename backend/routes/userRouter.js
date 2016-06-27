@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 var Users = require('../models/users-1');
 var Positions = require('../models/position-1')
+var Transactions = require('../models/transaction')
 
 var userRouter = express.Router();
 userRouter.use(bodyParser.json());
@@ -34,7 +35,10 @@ userRouter.route('/')
         if (err) throw err;
         Positions.remove({}, function (err, respo) {
             if (err) throw err;
-            res.json(respo);
+            Transactions.remove({}, function (err, r) {
+                if (err) throw err;
+                res.json(r);
+            })
         })
     });
 });

@@ -14,9 +14,29 @@ class PositionsController < ApplicationController
 	end
 
 	def update
-		pos = Position.find(params[:id])
-		pos["value"] = pos["qty"].to_f * params[:new_price]["share_price"].to_f
-		Position.Put(pos)
+		pos = Position.Find(params[:id])
+		if not params[:new_price].nil?
+			pos["value"] = pos["qty"].to_f * params[:new_price]["share_price"].to_f
+			Position.Put(pos)
+		end
+		if not params[:sell_shares].nil?
+			qty_sold = params[:sell_shares]["qty_sold"].to_f
+			share_value = (qty_sold/pos["qty"].to_f) * pos["value"]
+			trans = {:userId => pos["userId"], 
+					:posId => pos["_id"], 
+					:ticker => pos["name"], 
+					:isBuy => false, 
+					:value => share_value,
+					:qty => qty_sold}.to_json
+			Transaction.Post(trans)
+			pos["qty"] = pos["qty"].to_f - qty_sold
+			pos["value"] = pos["value"].to_f - share_value
+			user = User.find(pos["userId"])
+			user["cash_held"] = user["cash_held"].to_f + share_value
+			User.Put(user)
+			Position.Put(pos)
+		end
+
 	end
 
 	def create

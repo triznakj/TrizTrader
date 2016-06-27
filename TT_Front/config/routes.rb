@@ -20,6 +20,7 @@ Rails.application.routes.draw do
 
     resources :users
     resources :positions
+    resources :transactions
 
     root 'users#index'
   end

@@ -30,7 +30,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">TrizTrader</a>
+          <a class="navbar-brand" href="./">TrizTrader</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -45,44 +45,43 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Welcome To TrizTrader!</h1>
-        <p class="lead">In preparation for my new job, this is just a side project to make sure I'm up-to-speed on the latest Node/Rails frameworks and practices.</p>
-        <br>
-        <p class="lead">Changelog</p>
-        <ul>
-        <li>6/26/16 - Added transactions - you can now track every buy/sell (currently across all users with no filtering/privacy)
-        <li>6/18/16 - Modified User model for usability. Cash is no longer treated as a position held, but rather an attribute. </li>
-        <li>6/17/16 - Rudimentary bootstrapped frontend, can specify a change in share price</li>
-        </ul>
-        <a class="btn btn-primary" href="/users/new" role="button">New User</a>
-        <a class="btn btn-primary" href="/positions" role="button">All Positions</a>
+        <h1>All Transactions</h1>
+       
       </div>
     </div><!-- /.container -->
     <hr>
     <div class="container">
 
       <div class="starter-template">
-        <h1>View Existing Users</h1>
+        <h1>View Latest Transactions</h1>
         <table class = "table table-hover">
   <tr>
-    <th>User Name</th>
-    <th>User Goals</th>
-    <th>Total Cash Invested</th>
-    <th>Edit User</th>
-    <th>Delete User</th>
+    <th>Transaction Id</th>
+    <th>Initiating User</th>
+    <th>Ticker</th>
+    <th>Buy/Sell</th>
+    <th>Quantity</th>
   </tr>
  
-  <% @users.each do |u| %>
+  <% @transactions.each do |u| %>
     <tr>
-      <td><%= link_to u["name"], user_path(u["_id"]),
-              method: :get  %></td>
-      <td><%= u["goals"] %></td>
-      <td><%= u["cash_invested"] %></td>
-      <td><%= link_to 'Edit', edit_user_path(u["_id"]),
-              method: :get %></td>
-      <td><%= link_to 'Destroy', user_path(u["_id"]),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
+      <td><%= u["_id"] %></td>
+      <td><%= u["userName"] %></td>
+      <% if not u["ticker"].nil? %>
+        <td><%= u["ticker"] %></td>
+      <% else %>
+        <td>Cash</td>
+      <% end %>
+      <% if u["isBuy"] == "true" %>
+        <td>Buy</td>
+      <% else %>
+        <td>Sell</td>
+      <% end %>
+      <% if not u["qty"].nil? %>
+        <td><%= u["qty"] %></td>
+      <% else %>
+        <td>$ <%= u["value"] %></td>
+      <% end %>
     </tr>
   <% end %>
 </table>

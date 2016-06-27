@@ -1,8 +1,12 @@
-class UsersController < ApplicationController
+class TransactionsController < ApplicationController
 	require 'net/http'
 
 	def index
-		@users = User.All()
+		@transactions = Transaction.All()
+		@transactions.each do |t|
+			user = User.find(t["userId"])
+			t["userName"] = user["name"]
+		end
 	end
 
 	def new
@@ -13,6 +17,7 @@ class UsersController < ApplicationController
 		@positions = []
 		@total = @user["cash_held"]
 		@user["positions"].each do |p|
+			puts p
 			pos = Position.Find(p)
 			@positions.push(pos)
 			@total = @total + Integer(pos["value"])

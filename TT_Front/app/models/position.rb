@@ -30,11 +30,9 @@ class Position < ActiveRecord::Base
 	end
 
 	def self.Put newPos
-		puts newPos["_id"]
 		uri = URI('http://localhost:3000/position/'+newPos["_id"])
 		http = Net::HTTP.new(uri.host, uri.port)
 		req = Net::HTTP::Put.new(uri.path, initheader= {'Content-Type' => 'application/json'})
 		res = http.request(req, JSON.generate(newPos))
-		puts res.body
 	end
 end

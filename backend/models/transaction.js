@@ -1,17 +1,29 @@
 // grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Position = require('./position-1').schema
+var User = require('./users-1').schema
 var ObjectId = Schema.ObjectId;
 
 // create a schema
-var positionSchema = new Schema({
+var transactionSchema = new Schema({
     userId: {
         type: ObjectId,
         required: true,
         unique: false
     },
-    name: {
+    posId: {
+        type: ObjectId,
+        required: true,
+        unique: false
+    },
+    ticker: {
         type: String,
+        required: true,
+        unique: false
+    },
+    isBuy: {
+        type: Boolean,
         required: true,
         unique: false
     },
@@ -24,15 +36,14 @@ var positionSchema = new Schema({
         type: Number,
         required: false,
         unique: false
-    },
-    transactions: [ObjectId]
+    }
 }, {
     timestamps: true
 });
 
 // the schema is useless so far
 // we need to create a model using it
-var Positions = mongoose.model('Position', positionSchema);
+var Transactions = mongoose.model('Transaction', transactionSchema);
 
 // make this available to our Node applications
-module.exports = Positions;
+module.exports = Transactions;

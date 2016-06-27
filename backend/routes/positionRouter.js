@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 var Users = require('../models/users-1');
 var Positions = require('../models/position-1')
+var Transactions = require('../models/transaction')
 
 var positionRouter = express.Router();
 positionRouter.use(bodyParser.json());
