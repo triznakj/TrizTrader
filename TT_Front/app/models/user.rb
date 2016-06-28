@@ -30,11 +30,9 @@ class User < ActiveRecord::Base
 	end
 
 	def self.Put newUser
-		puts newUser["_id"]
 		uri = URI('http://localhost:3000/user/'+newUser["_id"])
 		http = Net::HTTP.new(uri.host, uri.port)
 		req = Net::HTTP::Put.new(uri.path, initheader= {'Content-Type' => 'application/json'})
 		res = http.request(req, JSON.generate(newUser))
-		puts res.body
 	end
 end

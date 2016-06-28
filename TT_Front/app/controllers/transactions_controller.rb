@@ -17,7 +17,6 @@ class TransactionsController < ApplicationController
 		@positions = []
 		@total = @user["cash_held"]
 		@user["positions"].each do |p|
-			puts p
 			pos = Position.Find(p)
 			@positions.push(pos)
 			@total = @total + Integer(pos["value"])

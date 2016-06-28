@@ -9,11 +9,10 @@ class Transaction < ActiveRecord::Base
 	end
 
 	def self.Post newTransaction
-		puts "Hello world"
-		puts newTransaction
 		uri = URI('http://localhost:3000/transaction')
 		http = Net::HTTP.new(uri.host, uri.port)
-		http.post(uri, newTransaction, {"Content-Type" => "application/json", "Accept" => "application/json"})
+		res = http.post(uri, newTransaction, {"Content-Type" => "application/json", "Accept" => "application/json"})
+		return JSON.parse(res.body)
 	end
 
 	def self.Delete id
